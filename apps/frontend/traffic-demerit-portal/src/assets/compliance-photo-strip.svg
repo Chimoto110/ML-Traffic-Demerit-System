@@ -1,0 +1,50 @@
+<svg width="1000" height="360" viewBox="0 0 1000 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="strip" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2239"/>
+      <stop offset="0.5" stop-color="#174867"/>
+      <stop offset="1" stop-color="#345D4A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="360" rx="20" fill="url(#strip)"/>
+
+  <g opacity="0.25" stroke="#7FC0D7" stroke-width="1">
+    <path d="M50 0V360"/>
+    <path d="M100 0V360"/>
+    <path d="M150 0V360"/>
+    <path d="M200 0V360"/>
+    <path d="M250 0V360"/>
+    <path d="M300 0V360"/>
+    <path d="M350 0V360"/>
+    <path d="M400 0V360"/>
+    <path d="M450 0V360"/>
+    <path d="M500 0V360"/>
+    <path d="M550 0V360"/>
+    <path d="M600 0V360"/>
+    <path d="M650 0V360"/>
+    <path d="M700 0V360"/>
+    <path d="M750 0V360"/>
+    <path d="M800 0V360"/>
+    <path d="M850 0V360"/>
+    <path d="M900 0V360"/>
+    <path d="M950 0V360"/>
+    <path d="M0 60H1000"/>
+    <path d="M0 120H1000"/>
+    <path d="M0 180H1000"/>
+    <path d="M0 240H1000"/>
+    <path d="M0 300H1000"/>
+  </g>
+
+  <g opacity="0.82" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 260 C 170 220, 270 220, 390 160 C 500 110, 620 120, 760 80 C 850 56, 920 70, 980 30" stroke="#F4E8C3" stroke-width="12"/>
+    <path d="M80 330 C 230 290, 340 270, 440 250 C 560 225, 670 185, 810 175 C 900 168, 950 150, 1000 120" stroke="#D8C99A" stroke-width="8"/>
+  </g>
+
+  <g>
+    <circle cx="180" cy="230" r="10" fill="#2DD4BF"/>
+    <circle cx="420" cy="145" r="10" fill="#FB923C"/>
+    <circle cx="740" cy="88" r="10" fill="#34D399"/>
+    <circle cx="900" cy="66" r="10" fill="#F59E0B"/>
+  </g>
+</svg>
