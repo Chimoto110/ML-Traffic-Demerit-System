@@ -73,3 +73,19 @@ Endpoints:
 - `POST /predict`
 
 `/predict` returns a risk probability, class, confidence, latency, model version, and up to three feature-importance-based factors. Risk cutoffs default to `0.40` for moderate and `0.70` for high, configurable with `RISK_LOW_CUTOFF` and `RISK_HIGH_CUTOFF`.
+
+## Testing
+
+```powershell
+python -m pytest test_app.py -v
+```
+
+The suite covers health and model metadata, the prediction contract (score range, risk-class consistency, determinism, ranked contributions), input validation (missing/extra columns, unknown categories, non-numeric values) and the risk-banding boundaries. Prediction tests skip automatically when the joblib artifact or `model/model_meta.json` is missing.
+
+## Evaluating the model
+
+```powershell
+python evaluate_model.py --input data/simulated_reoffending.csv
+```
+
+Scores the deployed artifact against a labelled CSV and prints ROC-AUC, PR-AUC, Brier score, F1/precision/recall at a configurable threshold, the confusion matrix and per-zone/weather mean scores. Results are written to `reports/model_evaluation.json`.
