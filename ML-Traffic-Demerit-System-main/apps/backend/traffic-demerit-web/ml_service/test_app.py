@@ -1,149 +1,199 @@
-"""
-Tests for FastAPI ML service endpoints.
+"""Tests for the v3 FastAPI risk-scoring service.
+
+Run from this directory with:
+
+    python -m pytest test_app.py -v
+
+The prediction tests are skipped automatically when the model artifacts
+are missing, so the suite still works on a fresh checkout before training.
 """
 
-import json
+import pytest
 from fastapi.testclient import TestClient
 
-from app import app
+import app as ml_app
 
-client = TestClient(app)
+client = TestClient(ml_app.app)
+
+# A complete, valid request: exactly the six features in model_meta.json.
+BASE_PAYLOAD = {
+    "days_since_last_offense": 120,
+    "speed_recorded": 95,
+    "zone_type": "urban",
+    "weather_conditions": "clear",
+    "cumulative_active_demerit_points": 4,
+    "past_fine_payment_delays_days": 10,
+}
+
+needs_model = pytest.mark.skipif(
+    not ml_app._model_loaded,
+    reason=f"risk model not loaded: {ml_app._load_error}",
+)
 
 
-def test_health():
-    """GET /v1/health should return ok with model status."""
+@pytest.fixture()
+def payload():
+    return dict(BASE_PAYLOAD)
+
+
+@pytest.fixture()
+def prediction(payload):
+    response = client.post("/v1/predict", json=payload)
+    assert response.status_code == 200
+    return response.json()
+
+
+# ----------------------------------------------------------------------
+# Health and metadata
+# ----------------------------------------------------------------------
+def test_v1_health_reports_model_status():
     response = client.get("/v1/health")
     assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "ok"
-    assert "models_loaded" in data
+    body = response.json()
+    assert body["status"] in {"ok", "degraded"}
+    assert "risk_model" in body["models_loaded"]
+    if ml_app._model_loaded:
+        assert body["status"] == "ok"
+        assert body["models_loaded"]["risk_model"] is True
+        assert body["error"] is None
 
 
-def test_health_legacy():
-    """GET /health should return ok (backward compat)."""
+def test_legacy_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
+    body = response.json()
+    assert body["engine"] == "CalibratedClassifierCV"
+    assert "models_loaded" in body
 
 
-def test_predict_risk_model_loaded():
-    """POST /v1/predict returns valid prediction when model is loaded."""
-    from app import _risk_model
-    if _risk_model is None:
-        # Skip if model not loaded in test env
-        return
-
-    response = client.post("/v1/predict", json={
-        "days_since_last_offense": 30,
-        "speed_recorded": 95,
-        "zone_type": "highway",
-        "weather_conditions": "clear",
-        "cumulative_active_demerit_points": 15,
-        "past_fine_payment_delays_days": 10,
-        "violation_count": 5,
-        "new_driver": False,
-        "segment_id": 0,
-        "distance_to_centroid": 1.5,
-        "rule_hit_count": 2,
-    })
+@needs_model
+def test_model_info_exposes_metadata():
+    response = client.get("/v1/model-info")
     assert response.status_code == 200
-    data = response.json()
-    assert "driver_risk_score" in data
-    assert "risk_class" in data
-    assert "confidence_level" in data
-    assert "inference_latency_ms" in data
-    assert "explanation_top_factors" in data
-    assert data["risk_class"] in ["low", "moderate", "high"]
-    assert 0 <= data["driver_risk_score"] <= 1
+    meta = response.json()
+    assert meta["model_version"] == "rf_v3"
+    assert meta["feature_cols"] == list(BASE_PAYLOAD.keys())
+    assert len(meta["feature_cols"]) == 6
+    assert set(meta["known_categories"]) == {"zone_type", "weather_conditions"}
 
 
-def test_predict_model_not_found(monkeypatch):
-    """POST /v1/predict returns 503 when model is not loaded."""
-    import app as app_module
-    original = app_module._risk_model
-    app_module._risk_model = None
-    try:
-        response = client.post("/v1/predict", json={
-            "days_since_last_offense": 30,
-            "speed_recorded": 95,
-            "zone_type": "highway",
-            "weather_conditions": "clear",
-            "cumulative_active_demerit_points": 15,
-            "past_fine_payment_delays_days": 10,
-        })
-        assert response.status_code == 503
-    finally:
-        app_module._risk_model = original
+# ----------------------------------------------------------------------
+# Prediction contract
+# ----------------------------------------------------------------------
+@needs_model
+def test_predict_returns_expected_shape(prediction):
+    assert set(prediction) == {
+        "score",
+        "raw_score",
+        "risk_class",
+        "model_version",
+        "inference_latency_ms",
+        "contributions",
+    }
+    assert prediction["model_version"] == "rf_v3"
 
 
-def test_predict_bad_input():
-    """POST /v1/predict with invalid data returns 422."""
-    response = client.post("/v1/predict", json={
-        "days_since_last_offense": -1,  # invalid: must be >= 0
-        "speed_recorded": 95,
-        "zone_type": "highway",
-        "weather_conditions": "clear",
-        "cumulative_active_demerit_points": 15,
-        "past_fine_payment_delays_days": 10,
-    })
+@needs_model
+def test_predict_score_and_class_are_consistent(prediction):
+    score = prediction["score"]
+    assert 0.0 <= score <= 1.0
+    if score >= ml_app.HIGH_CUTOFF:
+        assert prediction["risk_class"] == "high"
+    elif score >= ml_app.LOW_CUTOFF:
+        assert prediction["risk_class"] == "moderate"
+    else:
+        assert prediction["risk_class"] == "low"
+    assert prediction["inference_latency_ms"] >= 0
+
+
+@needs_model
+def test_predict_is_deterministic(payload):
+    first = client.post("/v1/predict", json=payload).json()
+    second = client.post("/v1/predict", json=payload).json()
+    assert first["score"] == second["score"]
+    assert first["risk_class"] == second["risk_class"]
+
+
+@needs_model
+def test_predict_contributions_are_ranked(prediction):
+    contributions = prediction["contributions"]
+    assert 0 < len(contributions) <= 5
+    magnitudes = [abs(c["contribution"]) for c in contributions]
+    assert magnitudes == sorted(magnitudes, reverse=True)
+    for item in contributions:
+        assert set(item) == {"feature", "contribution"}
+
+
+@needs_model
+def test_legacy_predict_matches_v1(payload):
+    v1 = client.post("/v1/predict", json=payload)
+    legacy = client.post("/predict", json=payload)
+    assert v1.status_code == legacy.status_code == 200
+    assert legacy.json()["score"] == v1.json()["score"]
+
+
+# ----------------------------------------------------------------------
+# Input validation
+# ----------------------------------------------------------------------
+@needs_model
+def test_missing_feature_returns_422(payload):
+    payload.pop("speed_recorded")
+    response = client.post("/v1/predict", json=payload)
+    assert response.status_code == 422
+    assert "speed_recorded" in response.json()["detail"]
+
+
+@needs_model
+def test_extra_feature_returns_422(payload):
+    payload["gender"] = "male"
+    response = client.post("/v1/predict", json=payload)
+    assert response.status_code == 422
+    assert "gender" in response.json()["detail"]
+
+
+@needs_model
+@pytest.mark.parametrize(
+    "field,bad_value",
+    [
+        ("zone_type", "moon"),
+        ("weather_conditions", "snow"),
+    ],
+)
+def test_unknown_category_returns_422(payload, field, bad_value):
+    payload[field] = bad_value
+    response = client.post("/v1/predict", json=payload)
+    assert response.status_code == 422
+    assert field in response.json()["detail"]
+
+
+@needs_model
+def test_non_numeric_value_returns_422(payload):
+    payload["speed_recorded"] = "very fast"
+    response = client.post("/v1/predict", json=payload)
+    assert response.status_code == 422
+    assert "speed_recorded" in response.json()["detail"]
+
+
+@needs_model
+def test_empty_body_returns_422():
+    response = client.post("/v1/predict", json={})
     assert response.status_code == 422
 
 
-def test_segments():
-    """GET /v1/segments returns segment profiles."""
-    response = client.get("/v1/segments")
-    assert response.status_code == 200
-    data = response.json()
-    assert "model_version" in data
-    assert "k" in data
-    assert "centroids" in data
-
-
-def test_rules():
-    """GET /v1/rules returns association rules."""
-    response = client.get("/v1/rules?limit=5")
-    assert response.status_code == 200
-    data = response.json()
-    assert "total" in data
-    assert "rules" in data
-    assert len(data["rules"]) <= 5
-
-
-def test_rules_filter_min_lift():
-    """GET /v1/rules with min_lift filter."""
-    response = client.get("/v1/rules?min_lift=2.0")
-    assert response.status_code == 200
-    data = response.json()
-    for rule in data["rules"]:
-        assert rule["lift"] >= 2.0
-
-
-def test_model_info():
-    """GET /v1/model-info returns model metadata."""
-    response = client.get("/v1/model-info")
-    assert response.status_code == 200
-    data = response.json()
-    assert "models" in data
-    assert "risk" in data["models"]
-    assert "segmentation" in data["models"]
-    assert "rules" in data["models"]
-
-
-def test_segment_endpoint():
-    """POST /v1/segment returns cluster assignment."""
-    from app import _kmeans_model
-    if _kmeans_model is None:
-        return
-
-    response = client.post("/v1/segment", json={
-        "violation_count": 5,
-        "cumulative_active_demerit_points": 15,
-        "avg_speed_over_limit": 10.0,
-        "past_fine_payment_delays_days": 5.0,
-        "unpaid_fine_ratio": 0.2,
-        "days_since_last_offense": 30,
-        "share_at_night": 0.3,
-    })
-    assert response.status_code == 200
-    data = response.json()
-    assert "cluster_id" in data
-    assert "distance_to_centroid" in data
+# ----------------------------------------------------------------------
+# Risk banding helper
+# ----------------------------------------------------------------------
+@pytest.mark.parametrize(
+    "score,expected",
+    [
+        (0.0, "low"),
+        (0.3999, "low"),
+        (ml_app.LOW_CUTOFF, "moderate"),
+        (0.55, "moderate"),
+        (0.6999, "moderate"),
+        (ml_app.HIGH_CUTOFF, "high"),
+        (0.95, "high"),
+    ],
+)
+def test_classify_boundaries(score, expected):
+    assert ml_app.classify(score) == expected
