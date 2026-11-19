@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. Backend (Laravel :8000)",
+            "type": "shell",
+            "command": "C:\\xampp\\php\\php.exe artisan serve --host=127.0.0.1 --port=8000",
+            "options": {
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web"
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "app-runners"
+            }
+        },
+        {
+            "label": "2. Frontend (Vite :5173)",
+            "type": "shell",
+            "command": "npm run dev",
+            "options": {
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\frontend\\traffic-demerit-portal"
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "app-runners"
+            }
+        },
+        {
+            "label": "3. ML service (FastAPI :8001, optional)",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Python312\\python.exe\" -m uvicorn app:app --host 127.0.0.1 --port 8001",
+            "options": {
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web\\ml_service"
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "app-runners"
+            }
+        },
+        {
+            "label": "Run app (backend + frontend)",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "1. Backend (Laravel :8000)",
+                "2. Frontend (Vite :5173)"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

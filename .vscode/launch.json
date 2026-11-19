@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open portal in Chrome (:5173)",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\frontend\\traffic-demerit-portal\\src"
+        }
+    ]
+}

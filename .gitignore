@@ -1,0 +1,35 @@
+# ---- Dependencies (regenerate with npm install / composer install) ----
+node_modules/
+vendor/
+
+# ---- Build output ----
+dist/
+
+# ---- Environment files (the .example files are committed instead) ----
+.env
+.env.local
+.env.*.local
+
+# ---- Reference template (course material - not part of this submission) ----
+# Remove this block if you DO want traffic-demerit-v2/ included in the repo.
+traffic-demerit-v2/
+
+# ---- Laravel runtime ----
+/storage/*.key
+/public/hot
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+
+# ---- Python / ML ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ---- Logs & OS/editor junk ----
+*.log
+npm-debug.log*
+yarn-error.log
+.DS_Store
+Thumbs.db
