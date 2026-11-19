@@ -1,0 +1,202 @@
+[
+  {
+    "name": "landing: driver/officer/admin portal links",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "landing: no role dropdown",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "wrong-role login shows generic portal error",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "admin status strip users = 412",
+    "ok": true,
+    "detail": "UI=412"
+  },
+  {
+    "name": "admin status strip drivers = 402",
+    "ok": true,
+    "detail": "UI=402"
+  },
+  {
+    "name": "admin status strip vehicles = 382",
+    "ok": true,
+    "detail": "UI=382"
+  },
+  {
+    "name": "admin status strip violations = 1500",
+    "ok": true,
+    "detail": "UI=1500"
+  },
+  {
+    "name": "admin status strip payments = 1167",
+    "ok": true,
+    "detail": "UI=1167"
+  },
+  {
+    "name": "admin status strip appeals = 19",
+    "ok": true,
+    "detail": "UI=19"
+  },
+  {
+    "name": "admin strip shows DB name",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "admin strip shows ML status badge (DOWN, fallback note)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "admin violations list shows total in table meta",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "analytics: monthly violations & fines chart",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "analytics: risk distribution rendered (low/moderate/high)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "analytics: payments summary totals present",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "officer \"Violations Issued\" tile = SQL (148)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "officer: success toast shows points/balance/risk",
+    "ok": true,
+    "detail": "+4 points · balance 4 · risk LOW (15%)"
+  },
+  {
+    "name": "MySQL: violation row created (speeding, 4 pts, officer 60, driver 401)",
+    "ok": true,
+    "detail": "1506|speeding|4|60|401"
+  },
+  {
+    "name": "MySQL: ledger entry +4, running balance 4",
+    "ok": true,
+    "detail": "4|4|violation_auto_post"
+  },
+  {
+    "name": "MySQL: driver balance now 4",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: in-app notification created for the driver (email receipt is a separate by-design row)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: risk prediction row created (heuristic while ML down)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "driver UI: TOTAL VIOLATIONS = 1",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "driver UI: Current Balance tile = 4 (gauge + stat from charts/driver)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "driver UI: ledger lists the new entry (reason \"violation\", the driver had none before)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "admin list shows the new violation (driver +4)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: ledger append-only (original +4, reversal -4, repost +8)",
+    "ok": true,
+    "detail": "4/violation_auto_post,-4/violation_edit_reversal,8/violation_edit_repost"
+  },
+  {
+    "name": "MySQL: driver balance now 8",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: violation points updated to 8",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "admin list reflects the edit (+8 Reckless)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "delete confirmation dialog explains soft delete",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: violation soft-deleted (row kept)",
+    "ok": true,
+    "detail": "deleted=1 reversal=1"
+  },
+  {
+    "name": "MySQL: delete reversal -8 appended (append-only ledger)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "MySQL: driver balance restored to 0",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "UI: deleted violation no longer listed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "ML insights: elbow curve section",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "ML insights: silhouette section",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "ML insights: PCA scatter (drivers)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "ML insights: segment profiles",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "ML insights: association rules",
+    "ok": true,
+    "detail": ""
+  }
+]
