@@ -206,6 +206,33 @@ def _validate_and_build_dataframe(body: Dict[str, Any]) -> pd.DataFrame:
     if errors:
         raise HTTPException(status_code=422, detail="; ".join(errors))
 
+    # Reject values the encoder has never seen: silently one-hot encoding an
+    # unknown category would produce an all-zero row and an unreliable score.
+    known_categories = (_risk_meta or {}).get("known_categories", {})
+    bad_values = []
+    for col, allowed in known_categories.items():
+        if col in body and body[col] not in allowed:
+            bad_values.append(f"{col}={body[col]!r} (allowed: {sorted(allowed)})")
+    if bad_values:
+        raise HTTPException(
+            status_code=422,
+            detail="Unknown categorical values: " + "; ".join(bad_values),
+        )
+
+    # Numeric columns must be real numbers, not booleans or strings.
+    bad_numeric = []
+    for col in _risk_numeric_cols:
+        if col not in body:
+            continue
+        value = body[col]
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            bad_numeric.append(f"{col}={value!r}")
+    if bad_numeric:
+        raise HTTPException(
+            status_code=422,
+            detail="Numeric columns must be numbers: " + "; ".join(bad_numeric),
+        )
+
     # Build row in exact column order from model_meta.json
     row = {c: body[c] for c in expected_cols}
     X = pd.DataFrame([row])
