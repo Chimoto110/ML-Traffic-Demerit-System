@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 215 44% 8%;
+    --foreground: 40 58% 94%;
+    --card: 216 34% 13%;
+    --card-foreground: 38 46% 92%;
+    --popover: 216 34% 13%;
+    --popover-foreground: 38 46% 92%;
+    --primary: 24 96% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 199 80% 18%;
+    --secondary-foreground: 190 60% 90%;
+    --muted: 217 23% 18%;
+    --muted-foreground: 219 15% 70%;
+    --accent: 190 88% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 75% 52%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 217 22% 26%;
+    --input: 217 22% 26%;
+    --ring: 24 96% 58%;
+    --chart-1: 190 88% 42%;
+    --chart-2: 24 89% 57%;
+    --chart-3: 220 23% 68%;
+    --chart-4: 160 53% 45%;
+    --chart-5: 35 86% 52%;
+    --radius: 0.9rem;
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sidebar-background: 218 37% 11%;
+    --sidebar-foreground: 40 42% 90%;
+    --sidebar-primary: 24 96% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 29% 16%;
+    --sidebar-accent-foreground: 40 42% 90%;
+    --sidebar-border: 217 22% 26%;
+    --sidebar-ring: 24 96% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    background-image:
+      linear-gradient(180deg, rgba(8, 14, 25, 0.35), rgba(8, 14, 25, 0.45)),
+      url('https://images.pexels.com/photos/15496495/pexels-photo-15496495.jpeg?auto=compress&cs=tinysrgb&w=1800'),
+      radial-gradient(72rem 72rem at 1% -6%, rgba(255, 123, 40, 0.22), transparent 62%),
+      radial-gradient(80rem 70rem at 96% -4%, rgba(0, 181, 212, 0.2), transparent 63%),
+      linear-gradient(180deg, rgba(13, 20, 34, 0.98), rgba(10, 16, 30, 1));
+    background-size: cover, cover, auto, auto, auto;
+    background-position: center, center, center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply relative min-h-screen;
+  }
+
+  .ambient-grid {
+    background-image:
+      linear-gradient(to right, rgba(191, 219, 254, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(191, 219, 254, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .glass-panel {
+    @apply rounded-2xl border border-cyan-100/20 bg-slate-900/70 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.8)] backdrop-blur;
+  }
+
+  .hero-chip {
+    @apply inline-flex items-center rounded-full border border-cyan-100/25 bg-cyan-300/10 px-3 py-1 text-[11px] font-semibold tracking-wide text-cyan-100;
+  }
+
+  .brand-title {
+    @apply font-display tracking-tight text-orange-50;
+  }
+
+  .enter-up {
+    animation: enter-up 500ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  }
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
