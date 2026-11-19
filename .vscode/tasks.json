@@ -34,9 +34,12 @@
         {
             "label": "3. ML service (FastAPI :8001, optional)",
             "type": "shell",
-            "command": "\"C:\\Program Files\\Python312\\python.exe\" -m uvicorn app:app --host 127.0.0.1 --port 8001",
+            "command": "\"${workspaceFolder}\\.venv\\Scripts\\python.exe\" -m uvicorn app:app --host 127.0.0.1 --port 8001",
             "options": {
-                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web\\ml_service"
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web\\ml_service",
+                "env": {
+                    "PYTHONIOENCODING": "utf-8"
+                }
             },
             "isBackground": true,
             "problemMatcher": [],
@@ -44,6 +47,42 @@
                 "reveal": "always",
                 "panel": "dedicated",
                 "group": "app-runners"
+            }
+        },
+        {
+            "label": "4. ML tests (pytest)",
+            "type": "shell",
+            "command": "\"${workspaceFolder}\\.venv\\Scripts\\python.exe\" -m pytest test_app.py -v",
+            "options": {
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web\\ml_service",
+                "env": {
+                    "PYTHONIOENCODING": "utf-8"
+                }
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "5. Evaluate ML model",
+            "type": "shell",
+            "command": "\"${workspaceFolder}\\.venv\\Scripts\\python.exe\" evaluate_model.py",
+            "options": {
+                "cwd": "${workspaceFolder}\\ML-Traffic-Demerit-System-main\\apps\\backend\\traffic-demerit-web\\ml_service",
+                "env": {
+                    "PYTHONIOENCODING": "utf-8"
+                }
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
             }
         },
         {
@@ -57,6 +96,16 @@
                 "kind": "build",
                 "isDefault": true
             },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run full system (backend + frontend + ML service)",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "1. Backend (Laravel :8000)",
+                "2. Frontend (Vite :5173)",
+                "3. ML service (FastAPI :8001, optional)"
+            ],
             "problemMatcher": []
         }
     ]
