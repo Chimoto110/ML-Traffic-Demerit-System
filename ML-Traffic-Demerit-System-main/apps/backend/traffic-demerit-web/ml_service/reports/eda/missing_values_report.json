@@ -1,0 +1,70 @@
+{
+  "id": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "driver_profile_id": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "violation_count": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "cumulative_active_demerit_points": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "days_since_last_offense": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "avg_speed_over_limit": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "share_in_school_zone": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "share_at_night": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "total_fines_kes": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "past_fine_payment_delays_days": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "unpaid_fine_ratio": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "appeals_filed": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "reoffended_within_180_days": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "new_driver": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "is_synthetic": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  },
+  "created_at": {
+    "missing_count": 403,
+    "missing_percent": 100.0
+  },
+  "updated_at": {
+    "missing_count": 0,
+    "missing_percent": 0.0
+  }
+}

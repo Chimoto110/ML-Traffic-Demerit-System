@@ -1,0 +1,100 @@
+{
+  "zone_type": {
+    "residential": {
+      "fpr": 0.303,
+      "tpr": 0.8594,
+      "n": 97,
+      "fpr_ratio_to_overall": 1.0,
+      "flagged": false
+    },
+    "school_zone": {
+      "fpr": 0.3333,
+      "tpr": 0.8333,
+      "n": 96,
+      "fpr_ratio_to_overall": 1.1,
+      "flagged": false
+    },
+    "urban": {
+      "fpr": 0.2821,
+      "tpr": 0.9492,
+      "n": 98,
+      "fpr_ratio_to_overall": 0.9308,
+      "flagged": false
+    },
+    "highway": {
+      "fpr": 0.2889,
+      "tpr": 0.9259,
+      "n": 99,
+      "fpr_ratio_to_overall": 0.9533,
+      "flagged": false
+    }
+  },
+  "weather_conditions": {
+    "clear": {
+      "fpr": 0.3714,
+      "tpr": 0.9531,
+      "n": 99,
+      "fpr_ratio_to_overall": 1.2257,
+      "flagged": false
+    },
+    "rain": {
+      "fpr": 0.3947,
+      "tpr": 0.8644,
+      "n": 97,
+      "fpr_ratio_to_overall": 1.3026,
+      "flagged": true
+    },
+    "night": {
+      "fpr": 0.3947,
+      "tpr": 1.0,
+      "n": 87,
+      "fpr_ratio_to_overall": 1.3026,
+      "flagged": true
+    },
+    "fog": {
+      "fpr": 0.1296,
+      "tpr": 0.7547,
+      "n": 107,
+      "fpr_ratio_to_overall": 0.4278,
+      "flagged": false
+    }
+  },
+  "segment_id": {
+    "1": {
+      "fpr": 0.8261,
+      "tpr": 0.9863,
+      "n": 96,
+      "fpr_ratio_to_overall": 2.7261,
+      "flagged": true
+    },
+    "0": {
+      "fpr": 0.3448,
+      "tpr": 0.9245,
+      "n": 82,
+      "fpr_ratio_to_overall": 1.1379,
+      "flagged": false
+    },
+    "3": {
+      "fpr": 0.1273,
+      "tpr": 0.7,
+      "n": 95,
+      "fpr_ratio_to_overall": 0.42,
+      "flagged": false
+    },
+    "2": {
+      "fpr": 0.2414,
+      "tpr": 0.8772,
+      "n": 115,
+      "fpr_ratio_to_overall": 0.7966,
+      "flagged": false
+    },
+    "4": {
+      "fpr": 0.0,
+      "tpr": 1.0,
+      "n": 2,
+      "fpr_ratio_to_overall": 0.0,
+      "flagged": false
+    }
+  },
+  "overall_fpr": 0.303
+}

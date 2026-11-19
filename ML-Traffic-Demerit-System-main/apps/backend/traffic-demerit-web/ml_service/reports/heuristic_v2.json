@@ -1,0 +1,52 @@
+{
+  "intercept": 0.05,
+  "coefficients": {
+    "cumulative_active_demerit_points": 0.015,
+    "violation_count_12m": 0.03,
+    "violation_count_90d": 0.05,
+    "weighted_points_12m": 0.01,
+    "severe_offence_share": 0.2,
+    "avg_speed_over_limit": 0.005,
+    "max_speed_over_limit": 0.003,
+    "days_since_last_offense": -0.001,
+    "mean_gap_between_offences": -0.001,
+    "trend": 0.1,
+    "share_night": 0.05,
+    "share_school_zone": 0.05,
+    "share_bad_weather": 0.05,
+    "unpaid_fine_ratio": 0.15,
+    "avg_payment_delay_days": 0.002,
+    "appeals_lost": 0.05,
+    "new_driver": -0.05,
+    "speed_recorded": 0.002,
+    "past_fine_payment_delays_days": 0.001
+  },
+  "feature_means": {
+    "days_since_last_offense": 242.8612,
+    "speed_recorded": 19.0108,
+    "zone_type": "urban",
+    "weather_conditions": "rain",
+    "cumulative_active_demerit_points": 8.0087,
+    "past_fine_payment_delays_days": 0.0
+  },
+  "feature_scales": {
+    "days_since_last_offense": 149.6326,
+    "speed_recorded": 44.6919,
+    "zone_type": 1.0,
+    "weather_conditions": 1.0,
+    "cumulative_active_demerit_points": 5.6925,
+    "past_fine_payment_delays_days": 0.0
+  },
+  "numeric_cols": [
+    "days_since_last_offense",
+    "speed_recorded",
+    "cumulative_active_demerit_points",
+    "past_fine_payment_delays_days"
+  ],
+  "categorical_cols": [
+    "zone_type",
+    "weather_conditions"
+  ],
+  "model_version": "heuristic_v2",
+  "description": "Deterministic logistic fallback when ML service is down. All coefficients non-negative."
+}
