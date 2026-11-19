@@ -1,0 +1,95 @@
+{
+  "model_version": "rf_v3",
+  "feature_cols": [
+    "days_since_last_offense",
+    "speed_recorded",
+    "zone_type",
+    "weather_conditions",
+    "cumulative_active_demerit_points",
+    "past_fine_payment_delays_days"
+  ],
+  "numeric_cols": [
+    "days_since_last_offense",
+    "speed_recorded",
+    "cumulative_active_demerit_points",
+    "past_fine_payment_delays_days"
+  ],
+  "categorical_cols": [
+    "zone_type",
+    "weather_conditions"
+  ],
+  "known_categories": {
+    "zone_type": [
+      "highway",
+      "residential",
+      "school_zone",
+      "urban"
+    ],
+    "weather_conditions": [
+      "clear",
+      "fog",
+      "night",
+      "rain"
+    ]
+  },
+  "thresholds": {
+    "warning": 0.4,
+    "training": 0.55,
+    "suspension": 0.7
+  },
+  "points_floor_anchors": {
+    "warning": {
+      "points": 10,
+      "score": 0.4
+    },
+    "restriction": {
+      "points": 20,
+      "score": 0.55
+    },
+    "suspension": {
+      "points": 30,
+      "score": 0.7
+    }
+  },
+  "metrics": {
+    "roc_auc": 0.5054,
+    "pr_auc": 0.5219,
+    "brier": 0.2593,
+    "f1": 0.6737,
+    "precision": 0.5155,
+    "recall": 0.9721,
+    "tier_metrics": {
+      "good_standing": {
+        "n": 1,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "warning": {
+        "n": 290,
+        "precision": 0.5166,
+        "recall": 0.9333,
+        "f1": 0.6651
+      },
+      "restricted": {
+        "n": 404,
+        "precision": 0.5149,
+        "recall": 1.0,
+        "f1": 0.6797
+      },
+      "suspended": {
+        "n": 2,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667
+      }
+    }
+  },
+  "sklearn_version": "1.9.1",
+  "trained_at": "2026-11-04T08:41:12.150412",
+  "data_source": "upload",
+  "include_synthetic": true,
+  "label_horizon_days": 180,
+  "n_train": 461,
+  "n_test": 697
+}
