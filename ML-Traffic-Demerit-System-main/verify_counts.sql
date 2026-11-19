@@ -1,0 +1,12 @@
+SELECT COUNT(*) as drivers FROM driver_profiles;
+SELECT COUNT(*) as violations FROM violations;
+SELECT COUNT(*) as ledger_entries FROM demerit_ledger_entries;
+SELECT COUNT(*) as payments FROM payments;
+SELECT COUNT(*) as sanctions FROM sanction_actions;
+SELECT COUNT(*) as appeals FROM appeals;
+SELECT COUNT(*) as review_logs FROM review_logs;
+SELECT COUNT(*) as risk_predictions FROM risk_predictions;
+SELECT COUNT(*) as risk_assessments FROM risk_assessments;
+SELECT COUNT(*) as system_notifications FROM system_notifications;
+SELECT COUNT(*) as vehicles FROM vehicles;
+SELECT COUNT(*) as users FROM users;
